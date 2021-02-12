@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  dev-api:
+    image: node
+    command: sh -c "npm i && npm run dev-start"
+    ports:
+      - 8080:8080
+    working_dir: /usr/src/app
+    volumes:
+      - ./api:/usr/src/app
+    environment:
+      PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BAOcjfVp8avCkZCNvskoNzc34rqFoZAhX3G9qtrI3ruSnCG2gZBvOzbDLaZA4Hcf3pmjcnvcj79fP6PMX807tl9mchzLTYLiPDk6lAysaVT3CPZAXZBXZBG5Dt4IqjzAEoRLkRF4aw12LZAMnVQDDRfgssrNpEebJogZDZD
+      VERIFY_TOKEN: 61868adf219ad435aeff62ba36e8e0e65b6e1e0d
