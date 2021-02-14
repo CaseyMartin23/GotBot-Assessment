@@ -21,63 +21,15 @@ const callSendApi = (senderPsid, response) => {
 const handleMessage = (senderPsid, receivedMessage) => {
   let response;
 
+  // Get user info here
+
   if (receivedMessage.text) {
     response = {
       text: `You sent the message: "${receivedMessage.text}". Now send me an image!`,
     };
   }
-  if (receivedMessage.attachments) {
-    response = {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [],
-        },
-      },
-    };
-
-    receivedMessage.attachments.forEach((attachment) => {
-      const element = {
-        title: "Is this the right picture?",
-        subtitle: "Tap a button to answer.",
-        image_url: attachment.payload.url,
-        buttons: [
-          {
-            type: "postback",
-            title: "Yes!",
-            payload: "yes",
-          },
-          {
-            type: "postback",
-            title: "No!",
-            payload: "no",
-          },
-        ],
-      };
-
-      response.attachment.payload.elements = [
-        ...response.attachment.payload.elements,
-        element,
-      ];
-    });
-  }
 
   callSendApi(senderPsid, JSON.stringify(response));
-};
-
-const handlePostback = (senderPsid, receivedPostback) => {
-  let response;
-  let payload = receivedPostback.payload;
-
-  if (payload === "yes") {
-    response = { text: "Thanks!" };
-  }
-  if (payload === "no") {
-    response = { text: "Oops, try sending another image." };
-  }
-
-  callSendApi(senderPsid, response);
 };
 
 router.get("/webhook", (req, res) => {
@@ -111,8 +63,6 @@ router.post("/webhook", (req, res) => {
 
       if (webhook_event.message) {
         handleMessage(sender_psid, webhook_event.message);
-      } else if (webhook_event.postback) {
-        handlePostback(sender_psid, webhook_event.postback);
       }
     });
 

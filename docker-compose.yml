@@ -1,9 +1,14 @@
-version: "3.8"
+version: "3"
 
 services:
-  dev-api:
-    image: node
-    command: sh -c "npm i && npm run dev-start"
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+
+  api:
+    build: ./api
+    command: sh -c "npm i && npm run prod-start"
     ports:
       - 8080:8080
     working_dir: /usr/src/app
@@ -12,3 +17,13 @@ services:
     environment:
       PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BAOcjfVp8avCkZCNvskoNzc34rqFoZAhX3G9qtrI3ruSnCG2gZBvOzbDLaZA4Hcf3pmjcnvcj79fP6PMX807tl9mchzLTYLiPDk6lAysaVT3CPZAXZBXZBG5Dt4IqjzAEoRLkRF4aw12LZAMnVQDDRfgssrNpEebJogZDZD
       VERIFY_TOKEN: 61868adf219ad435aeff62ba36e8e0e65b6e1e0d
+    depends_on:
+      - db
+
+  agent-ui:
+    build: ./agent-ui
+    ports:
+      - 4200:80
+    depends_on:
+      - api
+      - db
