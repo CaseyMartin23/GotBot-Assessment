@@ -2,24 +2,12 @@ const router = require("express").Router();
 const axios = require("axios");
 const UserModel = require("../db/userModel");
 
-const callSendApi = (senderPsid, response) => {
-  axios({
-    method: "POST",
-    url: `https://graph.facebook.com/v9.0/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
-    data: {
-      recipient: { id: senderPsid },
-      message: response,
-    },
-  })
-    .then(() => {
-      console.log("message sent!!!");
-    })
-    .catch((err) => {
-      console.error("Unable to send message:", err);
-    });
+let ioSocket;
+const setSocket = (socket) => {
+  ioSocket = socket;
 };
 
-const setUserData = (dataToSet, message, response) => {
+const setUserData = (dataToSet, message) => {
   UserModel.findOne({ user_id: dataToSet.id })
     .then(async (user) => {
       if (!user) {
@@ -27,7 +15,7 @@ const setUserData = (dataToSet, message, response) => {
           await UserModel.create({
             ...dataToSet,
             user_id: dataToSet.id,
-            messages: [{ user_message: message, agent_reply: response }],
+            messages: [{ message: message, isUserMessage: true }],
           });
         } catch (createUserError) {
           console.error("Unable to create user:", createUserError);
@@ -36,7 +24,7 @@ const setUserData = (dataToSet, message, response) => {
 
       if (user) {
         try {
-          user.messages.push({ user_message: message, agent_reply: response });
+          user.messages.push({ message: message, isUserMessage: true });
           user.save();
         } catch (createConversationError) {
           console.error("Unable to update messages:", createConversationError);
@@ -48,12 +36,12 @@ const setUserData = (dataToSet, message, response) => {
     });
 };
 
-const getUserProfileAndUserData = (userId, userMessage, agentReply) => {
+const getUserProfileAndUserData = (userId, userMessage) => {
   axios({
     url: `https://graph.facebook.com/v9.0/${userId}/?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
   })
     .then(({ data }) => {
-      setUserData(data, userMessage, agentReply);
+      setUserData(data, userMessage);
     })
     .catch((err) => {
       console.error("Failed to get user data: ", err);
@@ -62,12 +50,11 @@ const getUserProfileAndUserData = (userId, userMessage, agentReply) => {
 
 const handleMessage = (senderPsid, receivedMessage) => {
   if (receivedMessage.text) {
-    let response = {
-      text: `You sent the message: "${receivedMessage.text}". Now send me an image!`,
-    };
-
-    getUserProfileAndUserData(senderPsid, receivedMessage.text, response.text);
-    callSendApi(senderPsid, JSON.stringify(response));
+    getUserProfileAndUserData(senderPsid, receivedMessage.text);
+    ioSocket.emit("user-message", {
+      message: receivedMessage.text,
+      isUserMessage: true,
+    });
   }
 };
 
@@ -111,4 +98,4 @@ router.post("/webhook", (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = { router, setSocket };

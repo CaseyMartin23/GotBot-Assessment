@@ -6,7 +6,7 @@ import { ChatWindowComponent } from './chat-window/chat-window.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'chat', component: ChatWindowComponent },
+  { path: 'chat/:userId', component: ChatWindowComponent },
 ];
 
 @NgModule({
@@ -14,3 +14,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
+export const routingComponents = [HomeComponent, ChatWindowComponent];

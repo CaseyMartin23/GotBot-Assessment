@@ -1,16 +1,11 @@
 <div class="container user-list">
     <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <img src="" alt="test-image">
-            A list item
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <img src="" alt="test-image">
-            A second list item
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <img src="" alt="test-image">
-            A third list item
+        <li *ngFor="let user of users" routerLink="{{'chat/' + user.user_id}}"
+            class="user-list-item list-group-item d-flex align-items-center">
+            <img [src]="user.profile_pic" alt="test-image" class="user-profile-pic">
+            <span class="user-name">{{ user.first_name + " " + user.last_name }} </span>
         </li>
     </ul>
 </div>
+
+<!--  -->

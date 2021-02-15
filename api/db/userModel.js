@@ -5,7 +5,7 @@ const UserSchema = new Schema({
   first_name: String,
   last_name: String,
   profile_pic: String,
-  messages: [{ user_message: String, agent_reply: String }],
+  messages: [{ message: String, isUserMessage: Boolean }],
 });
 
 module.exports = model("User", UserSchema);

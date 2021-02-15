@@ -15,15 +15,15 @@ services:
     volumes:
       - ./api:/usr/src/app
     environment:
-      PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BAFuvOBv7HKa6ZApTIZB81PRkDFsMIiIxQFvocVcc5kpq3JfGv7ZBIl55GlO0xh3rBUW0Ux5IjTPgZBRZCxnkPh9L9tZAy3WoSyhNJI1odKR4JY25poZBpw6eq4Y6Jv0SUtH8cB3ohcUZBdT1bDXlL8CaiqEv32MNrAZDZD
+      PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BANZBlZBrmSRgLST9gk2hPs3fWmK1T1DZCA8IZBfZCGtY6D32a98FfVmz51NSQY2NzQc6uZCVqBG4VNznQbplRmIsTXU3tdXp1BP617yGbjgNX4OfuSQcn2NJv4PZCC0U4oAb8r1ZAcuGMWzgQ8jduZCfQbKMXtd9iuQZDZD
       VERIFY_TOKEN: 61868adf219ad435aeff62ba36e8e0e65b6e1e0d
     depends_on:
       - db
 
-  agent-ui:
-    build: ./agent-ui
-    ports:
-      - 4200:80
-    depends_on:
-      - api
-      - db
+  # agent-ui:
+  #   build: ./agent-ui
+  #   ports:
+  #     - 4200:80
+  #   depends_on:
+  #     - api
+  #     - db

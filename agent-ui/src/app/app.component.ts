@@ -15,5 +15,9 @@ export class AppComponent implements OnInit {
     this.webSocketService.listen('test-event').subscribe((data) => {
       console.log('backend-data->', data);
     });
+    this.webSocketService.listen('webhook').subscribe((data) => {
+      console.log('webhook->', data);
+    });
+    //
   }
 }

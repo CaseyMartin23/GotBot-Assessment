@@ -1,47 +1,20 @@
-<div class="container bg-light centered">
+<div class="container centered">
     <div class="chat-window">
-        <div class="user-message">
-            <div class="message-card bg-info">
-                user message user message user message
+        <div *ngFor="let conversation of userConversation"
+            [className]="conversation.isUserMessage ? 'user-message' : 'agent-message'">
+            <div [ngClass]="{
+                'bg-info': conversation.isUserMessage,
+                'bg-primary': !conversation.isUserMessage,
+                'message-card': true 
+            }">
+                {{ conversation.message }}
             </div>
         </div>
-        <div class="agent-message">
-            <div class="message-card bg-primary">
-                agent reply
-            </div>
-        </div>
-        <div class="agent-message">
-            <div class="message-card bg-primary">
-                agent reply agent reply agent reply agent reply agent reply agent reply agent reply agent reply agent
-                reply agent reply agent reply agent reply agent reply agent reply agent reply agent reply agent reply
-                agent reply agent reply agent reply agent reply agent reply agent reply agent reply
-            </div>
-        </div>
-        <div class="user-message">
-            <div class="message-card bg-info">
-                user message
-            </div>
-        </div>
-        <div class="agent-message">
-            <div class="message-card bg-primary">
-                agent reply
-            </div>
-        </div>
-        <div class="user-message">
-            <div class="message-card bg-info">
-                user message
-            </div>
-        </div>
-        <div class="user-message">
-            <div class="message-card bg-info">
-                user message
-            </div>
-        </div>
-
     </div>
 
-    <form class="input-form">
-        <input class="agent-input" type="text" name="agent-response">
+    <form #formData="ngForm" (ngSubmit)="sendMessage(formData)" class="input-form" autocomplete="off">
+        <input id="message_input" class="agent-input" type="text" [(ngModel)]="message" name="agent-response" required
+            placeholder="message...">
         <input class="agent-submit" type="submit" value="send">
     </form>
 </div>
