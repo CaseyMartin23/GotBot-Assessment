@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios");
+const UserModel = require("../db/userModel");
 
 const callSendApi = (senderPsid, response) => {
   axios({
@@ -18,18 +19,56 @@ const callSendApi = (senderPsid, response) => {
     });
 };
 
+const setUserData = (dataToSet, message, response) => {
+  UserModel.findOne({ user_id: dataToSet.id })
+    .then(async (user) => {
+      if (!user) {
+        try {
+          await UserModel.create({
+            ...dataToSet,
+            user_id: dataToSet.id,
+            messages: [{ user_message: message, agent_reply: response }],
+          });
+        } catch (createUserError) {
+          console.error("Unable to create user:", createUserError);
+        }
+      }
+
+      if (user) {
+        try {
+          user.messages.push({ user_message: message, agent_reply: response });
+          user.save();
+        } catch (createConversationError) {
+          console.error("Unable to update messages:", createConversationError);
+        }
+      }
+    })
+    .catch((err) => {
+      console.error("Unable to set userData:", err);
+    });
+};
+
+const getUserProfileAndUserData = (userId, userMessage, agentReply) => {
+  axios({
+    url: `https://graph.facebook.com/v9.0/${userId}/?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
+  })
+    .then(({ data }) => {
+      setUserData(data, userMessage, agentReply);
+    })
+    .catch((err) => {
+      console.error("Failed to get user data: ", err);
+    });
+};
+
 const handleMessage = (senderPsid, receivedMessage) => {
-  let response;
-
-  // Get user info here
-
   if (receivedMessage.text) {
-    response = {
+    let response = {
       text: `You sent the message: "${receivedMessage.text}". Now send me an image!`,
     };
-  }
 
-  callSendApi(senderPsid, JSON.stringify(response));
+    getUserProfileAndUserData(senderPsid, receivedMessage.text, response.text);
+    callSendApi(senderPsid, JSON.stringify(response));
+  }
 };
 
 router.get("/webhook", (req, res) => {

@@ -8,14 +8,14 @@ services:
 
   api:
     build: ./api
-    command: sh -c "npm i && npm run prod-start"
+    command: sh -c "npm i && npm run dev-start"
     ports:
       - 8080:8080
     working_dir: /usr/src/app
     volumes:
       - ./api:/usr/src/app
     environment:
-      PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BAOcjfVp8avCkZCNvskoNzc34rqFoZAhX3G9qtrI3ruSnCG2gZBvOzbDLaZA4Hcf3pmjcnvcj79fP6PMX807tl9mchzLTYLiPDk6lAysaVT3CPZAXZBXZBG5Dt4IqjzAEoRLkRF4aw12LZAMnVQDDRfgssrNpEebJogZDZD
+      PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BAFuvOBv7HKa6ZApTIZB81PRkDFsMIiIxQFvocVcc5kpq3JfGv7ZBIl55GlO0xh3rBUW0Ux5IjTPgZBRZCxnkPh9L9tZAy3WoSyhNJI1odKR4JY25poZBpw6eq4Y6Jv0SUtH8cB3ohcUZBdT1bDXlL8CaiqEv32MNrAZDZD
       VERIFY_TOKEN: 61868adf219ad435aeff62ba36e8e0e65b6e1e0d
     depends_on:
       - db
