@@ -1,5 +1,5 @@
 <div class="container centered">
-    <div class="chat-window">
+    <div class="chat-window" id="chat-div">
         <div *ngFor="let conversation of userConversation"
             [className]="conversation.isUserMessage ? 'user-message' : 'agent-message'">
             <div [ngClass]="{
@@ -15,6 +15,9 @@
     <form #formData="ngForm" (ngSubmit)="sendMessage(formData)" class="input-form" autocomplete="off">
         <input id="message_input" class="agent-input" type="text" [(ngModel)]="message" name="agent-response" required
             placeholder="message...">
-        <input class="agent-submit" type="submit" value="send">
+        <button class="agent-submit btn btn-success" type="submit">
+            send
+            <fa-icon style="color: white;" icon="paper-plane"></fa-icon>
+        </button>
     </form>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WebSocketService } from '../web-socket.service';
 import { UsersService } from '../users.service';
 import { UserInterface } from '../user';
 
@@ -10,15 +11,20 @@ import { UserInterface } from '../user';
 export class HomeComponent implements OnInit {
   public users: UserInterface[] = [];
 
-  constructor(private usersServices: UsersService) {}
+  constructor(
+    private usersServices: UsersService,
+    private webSocketService: WebSocketService
+  ) {}
 
   ngOnInit(): void {
-    try {
-      this.usersServices.getUsers().subscribe((allUsers) => {
-        this.users = allUsers;
-      });
-    } catch (err) {
-      console.error('Unable to get users:', err);
-    }
+    this.usersServices.getUsers().subscribe((allUsers) => {
+      this.users = allUsers;
+    });
+
+    // this.webSocketService.listen('user-message').subscribe(() => {
+    //   this.usersServices.getUsers().subscribe((allUsers) => {
+    //     this.users = allUsers;
+    //   });
+    // });
   }
 }

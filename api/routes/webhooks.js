@@ -17,6 +17,11 @@ const setUserData = (dataToSet, message) => {
             user_id: dataToSet.id,
             messages: [{ message: message, isUserMessage: true }],
           });
+
+          ioSocket.emit("new-user-message", {
+            message: message,
+            isUserMessage: true,
+          });
         } catch (createUserError) {
           console.error("Unable to create user:", createUserError);
         }
@@ -26,6 +31,10 @@ const setUserData = (dataToSet, message) => {
         try {
           user.messages.push({ message: message, isUserMessage: true });
           user.save();
+          ioSocket.emit("user-message", {
+            message: message,
+            isUserMessage: true,
+          });
         } catch (createConversationError) {
           console.error("Unable to update messages:", createConversationError);
         }
@@ -51,10 +60,6 @@ const getUserProfileAndUserData = (userId, userMessage) => {
 const handleMessage = (senderPsid, receivedMessage) => {
   if (receivedMessage.text) {
     getUserProfileAndUserData(senderPsid, receivedMessage.text);
-    ioSocket.emit("user-message", {
-      message: receivedMessage.text,
-      isUserMessage: true,
-    });
   }
 };
 

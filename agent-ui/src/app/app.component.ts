@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { WebSocketService } from './web-socket.service';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +8,7 @@ import { WebSocketService } from './web-socket.service';
 export class AppComponent implements OnInit {
   title = 'agent-ui';
 
-  constructor(private webSocketService: WebSocketService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.webSocketService.listen('test-event').subscribe((data) => {
-      console.log('backend-data->', data);
-    });
-    this.webSocketService.listen('webhook').subscribe((data) => {
-      console.log('webhook->', data);
-    });
-    //
-  }
+  ngOnInit() {}
 }

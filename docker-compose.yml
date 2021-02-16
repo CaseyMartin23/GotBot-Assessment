@@ -15,7 +15,7 @@ services:
     volumes:
       - ./api:/usr/src/app
     environment:
-      PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BANZBlZBrmSRgLST9gk2hPs3fWmK1T1DZCA8IZBfZCGtY6D32a98FfVmz51NSQY2NzQc6uZCVqBG4VNznQbplRmIsTXU3tdXp1BP617yGbjgNX4OfuSQcn2NJv4PZCC0U4oAb8r1ZAcuGMWzgQ8jduZCfQbKMXtd9iuQZDZD
+      PAGE_ACCESS_TOKEN: EAAM3jiOsrt4BACrioPKwHTHAyYBOZAwZCk8OMG3tTbMR25JoQc8zsaGodZAf1FgA5l4QZAp4iyzYw2uIvPhQ8nPEKwXT04bp3KtFHHGhSwxkxhLZBzqK6fdFHyK3Imip9LEFL5hsxUYo6StY3fuZBvhKZBnZCzGsqBIfjfhzU6kitwZDZD
       VERIFY_TOKEN: 61868adf219ad435aeff62ba36e8e0e65b6e1e0d
     depends_on:
       - db

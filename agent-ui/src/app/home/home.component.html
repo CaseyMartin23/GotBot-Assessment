@@ -2,8 +2,10 @@
     <ul class="list-group">
         <li *ngFor="let user of users" routerLink="{{'chat/' + user.user_id}}"
             class="user-list-item list-group-item d-flex align-items-center">
-            <img [src]="user.profile_pic" alt="test-image" class="user-profile-pic">
-            <span class="user-name">{{ user.first_name + " " + user.last_name }} </span>
+            <div class="conversation">
+                <img [src]="user.profile_pic" alt="test-image" class="user-profile-pic">
+                <div class="user-name">{{ user.first_name + " " + user.last_name }} </div>
+            </div>
         </li>
     </ul>
 </div>

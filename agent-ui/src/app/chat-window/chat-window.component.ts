@@ -28,7 +28,6 @@ export class ChatWindowComponent implements OnInit {
       this.userChatService
         .getUserAndChats(this.userId)
         .subscribe((userChats) => {
-          console.log('userChats->', userChats);
           this.userConversation = userChats;
         });
     }
@@ -39,19 +38,27 @@ export class ChatWindowComponent implements OnInit {
     });
   }
 
+  ngAfterViewChecked() {
+    const chatWindow = document.getElementById('chat-div');
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  }
+
   sendMessage(formData: NgForm) {
     let response = {
       message: '',
       isUserMessage: false,
     };
     if (formData.value && formData.value['agent-response'] && this.userId) {
-      // console.log("agent-response->", formData.value["agent-response"])
+      response = { ...response, message: formData.value['agent-response'] };
+
       this.webSocketService.emit('agent-message', {
         userId: this.userId,
-        response: { ...response, message: formData.value['agent-response'] },
+        response: response,
       });
+      this.userConversation.push(response);
     }
     this.message = '';
-    this.userConversation.push(response);
   }
 }
