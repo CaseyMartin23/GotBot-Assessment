@@ -21,10 +21,10 @@ export class HomeComponent implements OnInit {
       this.users = allUsers;
     });
 
-    // this.webSocketService.listen('user-message').subscribe(() => {
-    //   this.usersServices.getUsers().subscribe((allUsers) => {
-    //     this.users = allUsers;
-    //   });
-    // });
+    this.webSocketService.listen('new-user-message').subscribe(() => {
+      this.usersServices.getUsers().subscribe((allUsers) => {
+        this.users = allUsers;
+      });
+    });
   }
 }

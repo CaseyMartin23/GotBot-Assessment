@@ -18,6 +18,8 @@ const setUserData = (dataToSet, message) => {
             messages: [{ message: message, isUserMessage: true }],
           });
 
+          console.log("user->", user);
+
           ioSocket.emit("new-user-message", {
             message: message,
             isUserMessage: true,
@@ -29,12 +31,10 @@ const setUserData = (dataToSet, message) => {
 
       if (user) {
         try {
-          user.messages.push({ message: message, isUserMessage: true });
+          let userMessage = { message: message, isUserMessage: true };
+          user.messages.push(userMessage);
           user.save();
-          ioSocket.emit("user-message", {
-            message: message,
-            isUserMessage: true,
-          });
+          ioSocket.emit("user-message", userMessage);
         } catch (createConversationError) {
           console.error("Unable to update messages:", createConversationError);
         }

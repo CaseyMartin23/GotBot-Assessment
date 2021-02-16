@@ -11,9 +11,10 @@ import {
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
 import { faChevronLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, ...routingComponents],
+  declarations: [AppComponent, ...routingComponents, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
